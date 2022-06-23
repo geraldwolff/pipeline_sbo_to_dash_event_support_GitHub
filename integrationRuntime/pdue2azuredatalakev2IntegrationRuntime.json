@@ -1,0 +1,21 @@
+{
+    "name": "pdue2azuredatalakev2IntegrationRuntime",
+    "properties": {
+        "type": "Managed",
+        "typeProperties": {
+            "computeProperties": {
+                "location": "East US 2",
+                "dataFlowProperties": {
+                    "computeType": "General",
+                    "coreCount": 80,
+                    "timeToLive": 15,
+                    "cleanup": false
+                }
+            }
+        },
+        "managedVirtualNetwork": {
+            "type": "ManagedVirtualNetworkReference",
+            "referenceName": "default"
+        }
+    }
+}

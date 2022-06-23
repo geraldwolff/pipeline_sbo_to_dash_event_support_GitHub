@@ -1,0 +1,248 @@
+{
+    "name": "pipeline_sbo_to_dash_event",
+    "properties": {
+        "description": "Transfer the SBO to \n- AMDTESTDATAARCHIVE\n- GOPSAZFS Containers  ",
+        "activities": [
+            {
+                "name": "Extract_Files_to_Dash",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "BinarySource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": false,
+                            "deleteFilesAfterCompletion": false
+                        },
+                        "formatSettings": {
+                            "type": "BinaryReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "BinarySink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "parallelCopies": 50,
+                    "logSettings": {
+                        "enableCopyActivityLog": true,
+                        "copyActivityLogSettings": {
+                            "logLevel": "Info",
+                            "enableReliableLogging": true
+                        },
+                        "logLocationSettings": {
+                            "linkedServiceName": {
+                                "referenceName": "pdue2azuredatalakev2_linkedservices",
+                                "type": "LinkedServiceReference"
+                            },
+                            "path": {
+                                "value": "@concat('/mfttestdata/data/mft/log/SBO/sbokdf/',formatDateTime(utcnow(),'yyyyMMdd'))",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "pdue2azuredatalakev2_mftestfiles_dataset_event",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "source_path": "@pipeline().parameters.ContainerName",
+                            "file_name": "@pipeline().parameters.FileName"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "pdamdtestdatarchive_testdata",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Copy_to_GOPS",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Extract_Files_to_Dash",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "BinarySource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": false,
+                            "deleteFilesAfterCompletion": false
+                        },
+                        "formatSettings": {
+                            "type": "BinaryReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "BinarySink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "logSettings": {
+                        "enableCopyActivityLog": true,
+                        "copyActivityLogSettings": {
+                            "logLevel": "Info",
+                            "enableReliableLogging": true
+                        },
+                        "logLocationSettings": {
+                            "linkedServiceName": {
+                                "referenceName": "pdue2azuredatalakev2_linkedservices",
+                                "type": "LinkedServiceReference"
+                            },
+                            "path": {
+                                "value": "@concat('/mfttestdata/data/mft/log/SBO/sbokdf/',formatDateTime(utcnow(),'yyyyMMdd'))",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "pdue2azuredatalakev2_mftestfiles_dataset_event",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "source_path": {
+                                "value": "@pipeline().parameters.ContainerName",
+                                "type": "Expression"
+                            },
+                            "file_name": "@pipeline().parameters.FileName"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "pdue2azuredatalakev2_gopsarch_dataset",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "destination_path": {
+                                "value": "@concat('data','/','incoming','/','kdf','/','sbo','/',formatDateTime(utcnow(),'yyyy'),formatDateTime(utcnow(),'MM'),formatDateTime(utcnow(),'dd'))",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Copy_to_DONE",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Copy_to_GOPS",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "BinarySource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": false,
+                            "deleteFilesAfterCompletion": true
+                        },
+                        "formatSettings": {
+                            "type": "BinaryReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "BinarySink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "logSettings": {
+                        "enableCopyActivityLog": true,
+                        "copyActivityLogSettings": {
+                            "logLevel": "Warning",
+                            "enableReliableLogging": true
+                        },
+                        "logLocationSettings": {
+                            "linkedServiceName": {
+                                "referenceName": "pdue2azuredatalakev2_linkedservices",
+                                "type": "LinkedServiceReference"
+                            },
+                            "path": {
+                                "value": "@concat('/mfttestdata/data/mft/log/SBO/sbokdf/',formatDateTime(utcnow(),'yyyyMMdd'))",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "pdue2azuredatalakev2_mftestfiles_dataset_event",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "source_path": "@pipeline().parameters.ContainerName",
+                            "file_name": "@pipeline().parameters.FileName"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "pdue2azuredatalakev2_mftestfiles_dataset",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "source_path": "@concat('data','/','mft','/','sbo','/','kdf','/','gopsazfs','/','done','/',formatDateTime(utcnow(),'yyyyMMdd'))",
+                            "file_name": "@pipeline().parameters.FileName"
+                        }
+                    }
+                ]
+            }
+        ],
+        "parameters": {
+            "ContainerName": {
+                "type": "string"
+            },
+            "FileName": {
+                "type": "string"
+            }
+        },
+        "variables": {
+            "P_FileName": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    }
+}

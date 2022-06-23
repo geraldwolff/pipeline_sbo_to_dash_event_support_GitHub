@@ -1,0 +1,12 @@
+{
+    "name": "pdueamdtestdataarchive_testdata_linkedservices",
+    "type": "Microsoft.DataFactory/factories/linkedservices",
+    "properties": {
+        "annotations": [],
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+            "sasUri": "https://amdtestdataarchive.blob.core.windows.net/testdata",
+            "encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDc1NUJGQjdCLUJBMDMtNEVFQS04NzE4LUI4M0ExNDlCRkYyQV8wOWM1M2MwMi0yYWExLTRmYmMtYmZiNS1kYzMyNzUzNmVjM2QiDQp9"
+        }
+    }
+}

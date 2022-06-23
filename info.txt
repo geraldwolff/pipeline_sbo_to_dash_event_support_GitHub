@@ -1,0 +1,6 @@
+selected resource name:		pipeline_sbo_to_dash_event
+selected resource type:		pipeline
+factory name:			pdue2azuredatafactoryv2
+factory location:		eastus2
+subscription id:		6d3d998c-abd9-4369-9f7a-9fc9a69ea4e4
+time of download (UTC):		Thu, 23 Jun 2022 22:32:33 GMT

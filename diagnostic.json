@@ -1,0 +1,22 @@
+{
+    "now": "2022-06-23T22:32:33.110Z",
+    "perfNow": 6287475.199999999,
+    "diagnosticCorrelation": "89c8125a-8cc6-465e-a2b7-43c02802d4b2",
+    "source": "DownloadSupportFiles",
+    "environment": {
+        "productName": "adf",
+        "buildVersion": "1.0.062222.1",
+        "environmentType": 3,
+        "resourceName": "pdue2azuredatafactoryv2",
+        "resourceRegion": "eastus2",
+        "resourceGroup": "pdue2-adlsv2-rg",
+        "subscriptionId": "6d3d998c-abd9-4369-9f7a-9fc9a69ea4e4",
+        "sessionId": "mxUhS",
+        "operationId": "RjmjO",
+        "gitType": "GitHub"
+    },
+    "additionalInfo": {
+        "selectedResource": "pipeline_sbo_to_dash_event",
+        "selectedResourceType": "pipeline"
+    }
+}

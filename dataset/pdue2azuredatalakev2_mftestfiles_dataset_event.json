@@ -1,0 +1,32 @@
+{
+    "name": "pdue2azuredatalakev2_mftestfiles_dataset_event",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "pdue2azuredatalakev2_linkedservices",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "source_path": {
+                "type": "string"
+            },
+            "file_name": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "Binary",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().file_name",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().source_path",
+                    "type": "Expression"
+                }
+            }
+        }
+    }
+}

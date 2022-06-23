@@ -1,0 +1,29 @@
+{
+    "name": "trigger_sbokdf_event",
+    "properties": {
+        "annotations": [],
+        "runtimeState": "Started",
+        "pipelines": [
+            {
+                "pipelineReference": {
+                    "referenceName": "pipeline_sbo_to_dash_event",
+                    "type": "PipelineReference"
+                },
+                "parameters": {
+                    "ContainerName": "@triggerBody().folderPath",
+                    "FileName": "@triggerBody().fileName"
+                }
+            }
+        ],
+        "type": "BlobEventsTrigger",
+        "typeProperties": {
+            "blobPathBeginsWith": "/mfttestdata/blobs/data/mft/sbo/kdf/gopsazfs/incoming/",
+            "blobPathEndsWith": ".kdf",
+            "ignoreEmptyBlobs": true,
+            "scope": "/subscriptions/6d3d998c-abd9-4369-9f7a-9fc9a69ea4e4/resourceGroups/pdue2-adlsv2-rg/providers/Microsoft.Storage/storageAccounts/pdue2azuredatalakev2",
+            "events": [
+                "Microsoft.Storage.BlobCreated"
+            ]
+        }
+    }
+}

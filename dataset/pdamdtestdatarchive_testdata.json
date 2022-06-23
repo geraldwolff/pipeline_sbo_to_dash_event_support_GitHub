@@ -1,0 +1,17 @@
+{
+    "name": "pdamdtestdatarchive_testdata",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "pdueamdtestdataarchive_testdata_linkedservices",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Binary",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "container": "testdata"
+            }
+        }
+    }
+}

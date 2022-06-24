@@ -1,0 +1,9 @@
+{
+	"name": "jwadf",
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3dd8e142-5c17-4039-8293-bb201a158c9d",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}
